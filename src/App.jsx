@@ -4,7 +4,7 @@ import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from "./pages/Landing";
 import HomePage from "./pages/HomePage";
 import ReadBlog from "./pages/ReadBlog";
-import { Layout } from "./components/layout";
+import { Layout } from "./components/Layout";
 import { useEffect } from "react";
 import axios from "axios";
 function App() {
