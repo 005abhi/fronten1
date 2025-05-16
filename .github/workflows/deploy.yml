@@ -25,7 +25,9 @@ jobs:
 
             sudo apt update
 
-            sudo rm -r *
+            # Clean up specific folders if they exist
+            sudo rm -rf fronten1 || true
+            sudo rm -rf backend || true
 
             git clone https://github.com/005abhi/fronten1
             git clone https://github.com/005abhi/backend
