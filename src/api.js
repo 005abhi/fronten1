@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Use Vite environment variable or fallback
-const URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3001";
+const URL = import.meta.env.VITE_API_BASE_URL || "http://15.206.185.169:3001";
 
 export async function getposts() {
   const res = await axios.get(`${URL}/post`);
