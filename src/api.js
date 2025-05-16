@@ -1,24 +1,24 @@
 import axios from "axios";
-const URL = "http://localhost:3001";
+
+// Use environment variable or fallback to localhost
+const URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:3001";
 
 export async function getposts() {
   const res = await axios.get(`${URL}/post`);
   if (res.status === 200) {
     return res.data;
-  } else {
-    return;
   }
 }
 
 export async function getpost(id) {
-  const res = await fetch(`http://localhost:3001/post/${id}`, {
+  const res = await fetch(`${URL}/post/${id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
 
   if (!res.ok) {
-    const message = await res.text(); // fallback for plain text errors
+    const message = await res.text();
     throw new Error(message || "Failed to fetch post");
   }
 
@@ -43,12 +43,11 @@ export async function deleteposts(id) {
   const res = await axios.delete(`${URL}/post/${id}`);
   return res;
 }
+
 export async function getusers() {
   const res = await axios.get(`${URL}/user`);
   if (res.status === 200) {
     return res.data;
-  } else {
-    return;
   }
 }
 
@@ -56,8 +55,6 @@ export async function getuser(id) {
   const res = await axios.get(`${URL}/user/${id}`);
   if (res.status === 200) {
     return res.data;
-  } else {
-    return;
   }
 }
 
@@ -75,8 +72,6 @@ export async function verifyuser(user) {
   const res = await axios.post(`${URL}/user/login`, user);
   if (res.data.success) {
     return res.data.token;
-  } else {
-    return;
   }
 }
 
@@ -91,7 +86,7 @@ export async function createimage(file) {
     },
   });
 
-  return res; // res.data.filename
+  return res;
 }
 
 export async function getimage(filename) {
@@ -99,5 +94,5 @@ export async function getimage(filename) {
     responseType: "blob",
   });
   const imageBlob = res.data;
-  return URL.createObjectURL(imageBlob); // returns usable image URL
+  return URL.createObjectURL(imageBlob);
 }
