@@ -1,13 +1,11 @@
 import axios from "axios";
 
-// Use environment variable or fallback to localhost
-const URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:3001";
+// Use Vite environment variable or fallback
+const URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3001";
 
 export async function getposts() {
   const res = await axios.get(`${URL}/post`);
-  if (res.status === 200) {
-    return res.data;
-  }
+  if (res.status === 200) return res.data;
 }
 
 export async function getpost(id) {
