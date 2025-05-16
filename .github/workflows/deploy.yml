@@ -1,67 +1,50 @@
-name: Dev Deploy to EC2
 
 on:
   push:
     branches:
-      - main
+      - main 
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: main # Fetch the latest code from the main branch
 
-      - name: SSH and Deploy
-        run: |
-          ssh -i ${{ secrets.EC2_KEY }} ubuntu@15.206.185.169 << 'EOF'
+      - name: SSH to EC2
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: 15.206.185.169
+          username: ubuntu
+          key: ${{ secrets.EC2_KEY }}
+          port: 22
+          script: |
 
-            sudo apt update
+          set -e 
 
-            sudo rm -r *
+          sudo apt update
 
-            # Clone or pull repo
-            git clone https://github.com/005abhi/fronten1
-            git clone https://github.com/005abhi/backend
+          sudo rm -r *
 
-            pkill -9 node
+          git clone https://github.com/005abhi/fronten1
+          git clone https://github.com/005abhi/backend
 
-            sudo chmod -R 777 ~/fronten1
-            sudo chmod -R 777 ~/backend
+          pkill -9 node || true
 
+          sudo chmod -R 777 ~/fronten1
+          sudo chmod -R 777 ~/backend
 
+          cd fronten1
+          rm -rf node_modules package-lock.json
+          npm cache clean --force
+          npm install
+          nohup npm run dev > frontend.log 2>&1 &
 
-            cd fronten1
-
-            # Frontend repair
-            # 1. Remove the lockfile and node_modules
-            rm -rf node_modules package-lock.json
-
-            # 2. Clear npm cache
-            npm cache clean --force
-
-            # 3. Reinstall dependencies
-            npm install
-
-            # Run frontend (in background)
-            nohup npm run dev > frontend.log 2>&1 &
-
-
-
-            cd backend
-
-            # Backend repair
-            # 1. Delete node_modules and package-lock.json
-            rm -rf node_modules package-lock.json
-
-            # 2. Clear npm cache (optional, helps in some cases)
-            npm cache clean --force
-
-            # 3. Reinstall dependencies
-            npm install
-
-            # Run backend (in background)
-            nohup npm run dev > backend.log 2>&1 &
-
-          EOF
+          cd ../backend
+          rm -rf node_modules package-lock.json
+          npm cache clean --force
+          npm install
+          nohup npm run dev > backend.log 2>&1 &
