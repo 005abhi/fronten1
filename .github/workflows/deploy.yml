@@ -11,7 +11,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          ref: main # Fetch the latest code from the main branch
+          ref: main
 
       - name: SSH to EC2
         uses: appleboy/ssh-action@v1.2.0
@@ -21,21 +21,33 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           port: 22
           script: |
-            set -e 
+            set -e
 
             sudo apt update
 
-            # Clean up specific folders if they exist
-            sudo rm -rf fronten1 || true
-            sudo rm -rf backend || true
+            # Clone or pull frontend
+            if [ -d "fronten1/.git" ]; then
+              echo "Updating frontend repo..."
+              cd fronten1
+              git pull origin main
+              cd ..
+            else
+              echo "Cloning frontend repo..."
+              git clone https://github.com/005abhi/fronten1
+            fi
 
-            git clone https://github.com/005abhi/fronten1
-            git clone https://github.com/005abhi/backend
+            # Clone or pull backend
+            if [ -d "backend/.git" ]; then
+              echo "Updating backend repo..."
+              cd backend
+              git pull origin main
+              cd ..
+            else
+              echo "Cloning backend repo..."
+              git clone https://github.com/005abhi/backend
+            fi
 
             pkill -9 node || true
-
-            sudo chmod -R 777 ~/fronten1
-            sudo chmod -R 777 ~/backend
 
             cd fronten1
             rm -rf node_modules package-lock.json
