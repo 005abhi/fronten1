@@ -1,8 +1,7 @@
-
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   deploy:
@@ -22,29 +21,28 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           port: 22
           script: |
+            set -e 
 
-          set -e 
+            sudo apt update
 
-          sudo apt update
+            sudo rm -r *
 
-          sudo rm -r *
+            git clone https://github.com/005abhi/fronten1
+            git clone https://github.com/005abhi/backend
 
-          git clone https://github.com/005abhi/fronten1
-          git clone https://github.com/005abhi/backend
+            pkill -9 node || true
 
-          pkill -9 node || true
+            sudo chmod -R 777 ~/fronten1
+            sudo chmod -R 777 ~/backend
 
-          sudo chmod -R 777 ~/fronten1
-          sudo chmod -R 777 ~/backend
+            cd fronten1
+            rm -rf node_modules package-lock.json
+            npm cache clean --force
+            npm install
+            nohup npm run dev > frontend.log 2>&1 &
 
-          cd fronten1
-          rm -rf node_modules package-lock.json
-          npm cache clean --force
-          npm install
-          nohup npm run dev > frontend.log 2>&1 &
-
-          cd ../backend
-          rm -rf node_modules package-lock.json
-          npm cache clean --force
-          npm install
-          nohup npm run dev > backend.log 2>&1 &
+            cd ../backend
+            rm -rf node_modules package-lock.json
+            npm cache clean --force
+            npm install
+            nohup npm run dev > backend.log 2>&1 &
