@@ -28,8 +28,7 @@ export const ReadBlog = () => {
 
       {posts.imageid && (
         <img
-          src={`http://15.206.185.169:3001
-/images/${posts.imageid}`}
+          src={`http://15.206.185.169:3001/images/${posts.imageid}`}
           alt="Blog"
           className="post-image"
         />
