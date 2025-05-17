@@ -17,7 +17,7 @@ export function BlogCard({ post }) {
 
       {post.imageid && (
         <img
-          src={`http://localhost:3001/images/${post.imageid}`}
+          src={`http://15.206.185.169:3001/images/${post.imageid}`}
           alt="Blog"
           className="post-image"
           style={{ maxWidth: "100%", height: "auto", marginBottom: "1rem" }}
