@@ -10,8 +10,8 @@ export default defineConfig({
     proxy: {
       "/user": "http://localhost:3001",
       "/post": "http://localhost:3001",
-      "/images": "http://15.206.185.169:3001",
-      "/uploads": "http://15.206.185.169:3001",
+      "/images": "http://localhost:3001",
+      "/uploads": "http://localhost:3001",
     },
   },
 });
