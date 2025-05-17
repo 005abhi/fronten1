@@ -175,7 +175,7 @@ export function HomePage() {
                   >
                     {post.imageid && (
                       <img
-                        src={`http://localhost:3001/images/${post.imageid}`}
+                        src={`http://15.206.185.169:3001/images/${post.imageid}`}
                         alt="Blog"
                         className="post-image"
                       />
