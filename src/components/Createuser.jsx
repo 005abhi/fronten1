@@ -15,6 +15,13 @@ export function Createuser({ setView }) {
     let res = await createuser(user);
     if (res.status !== 200) {
       alert("User could not be created");
+    } else {
+      // Reset form fields
+      setUser({
+        name: "",
+        email: "",
+        password: "",
+      });
     }
   }
 
@@ -44,6 +51,7 @@ export function Createuser({ setView }) {
             required
             maxLength={20}
             onChange={handelChange}
+            value={user.name}
           />
           <input
             type="text"
@@ -52,6 +60,7 @@ export function Createuser({ setView }) {
             required
             maxLength={30}
             onChange={handelChange}
+            value={user.email}
           />
           <input
             type="password"
@@ -60,7 +69,9 @@ export function Createuser({ setView }) {
             required
             maxLength={20}
             onChange={handelChange}
+            value={user.password}
           />
+
           <button type="submit">Submit</button>
         </form>
         <p className="form-footer">
