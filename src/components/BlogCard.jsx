@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+const BASE_URL = "http://15.206.185.169:3001";
 export function BlogCard({ post }) {
   let stringDate = "Invalid Date";
   if (post.dateCreated) {
@@ -17,7 +18,7 @@ export function BlogCard({ post }) {
 
       {post.imageid && (
         <img
-          src={`http://15.206.185.169:3001/images/${post.imageid}`}
+          src={`${BASE_URL}/uploads/${post.imageid}`} // ✅ Corrected path
           alt="Blog"
           className="post-image"
           style={{ maxWidth: "100%", height: "auto", marginBottom: "1rem" }}
